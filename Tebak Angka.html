@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game Tebak Angka</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff4b4b, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .game-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      color: #e60000;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 2px solid #ff4b4b;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff4b4b;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #d90000;
+    }
+
+    #hasil {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #kesempatan {
+      margin-top: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-box">
+    <h1>Selamat Datang di GameTebak Angka</h1>
+    <p>Tebak angka dari 1 - 10</p>
+
+    <input type="number" id="inputAngka" placeholder="Masukkan angka">
+    <br>
+
+    <button onclick="cekAngka()">Tebak</button>
+
+    <div id="hasil"></div>
+    <div id="kesempatan">Sisa kesempatan: 5</div>
+  </div>
+
+  <script>
+    let angkaRahasia = Math.floor(Math.random() * 10) + 1;
+    let kesempatan = 5;
+
+    function cekAngka() {
+      const input = document.getElementById("inputAngka").value;
+      const hasil = document.getElementById("hasil");
+      const kesempatanText = document.getElementById("kesempatan");
+
+      if (input === "") {
+        hasil.innerHTML = "Masukkan angka dulu!";
+        hasil.style.color = "red";
+        return;
+      }
+
+      const tebakan = parseInt(input);
+
+      // Jika tebakan benar
+      if (tebakan === angkaRahasia) {
+        hasil.innerHTML = "🎉 Selamat! Tebakan kamu benar!.";
+        hasil.style.color = "green";
+
+        // Membuat angka baru
+        angkaRahasia = Math.floor(Math.random() * 10) + 1;
+
+        // Reset kesempatan
+        kesempatan = 5;
+
+        // Kosongkan input
+        document.getElementById("inputAngka").value = "";
+      } 
+      else {
+        kesempatan--;
+
+        if (kesempatan === 0) {
+          hasil.innerHTML = `❌ Game Over! Angka yang benar adalah ${angkaRahasia}`;
+          hasil.style.color = "red";
+
+          // Reset game otomatis
+          angkaRahasia = Math.floor(Math.random() * 10) + 1;
+          kesempatan = 5;
+        } 
+        else if (tebakan < angkaRahasia) {
+          hasil.innerHTML = "⬆️ Angka terlalu kecil!";
+          hasil.style.color = "orange";
+        } 
+        else {
+          hasil.innerHTML = "⬇️ Angka terlalu besar!";
+          hasil.style.color = "orange";
+        }
+      }
+
+      kesempatanText.innerHTML = `Sisa kesempatan: ${kesempatan}`;
+    }
+  </script>
+
+</body>
+</html>
